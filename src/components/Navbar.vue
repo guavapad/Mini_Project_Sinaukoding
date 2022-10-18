@@ -1,15 +1,15 @@
 <template>
-    <nav class="navbar nav-edit bg-info fixed-top">
+    <nav class="navbar nav-edit bg-kaler  fixed-top">
         <div class="container-fluid">
           <div class="left-logo">
             <!-- <a class="navbar-brand text-primary" href="#">MARKETPLACE</a> -->
-            <h3 class="text-primary navbar-brand fw-bold">MARKETPLACE</h3>
+            <h3 class="text-white navbar-brand fw-bold">MARKETPLACE</h3>
             <img src="../assets/sinau-koding.png" class="img-size" alt="">
           </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+          <button class="navbar-toggler btn-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="offcanvas offcanvas-end text-bg-info" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas offcanvas-end bg-kaler" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="offcanvas-header">
               <h5 class="offcanvas-title text-white" id="offcanvasDarkNavbarLabel">MarketPlace Sinau Koding</h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -29,6 +29,9 @@
       </nav>
 </template>
 <style scoped>
+.bg-kaler{
+  background-color: #900C3F;
+}
 .img-size{
   height: 35px;
   width: 100px;

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import  {useAuth} from '../'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,42 +7,66 @@ const router = createRouter({
     {
       path: '/',
       name: 'barang.index',
-      component: () => import('../views/barang/Index.vue')
+      component: () => import('../views/barang/Index.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
       path: '/create',
       name: 'barang.create',
-      component: () => import('../views/barang/Create.vue')
+      component: () => import('../views/barang/Create.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'barang.edit',
-      component: () => import('../views/barang/Edit.vue')
+      component: () => import('../views/barang/Edit.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
       path: '/register',
       name: 'auth.register',
-      component: () => import('../views/auth/Register.vue')
+      component: () => import('../views/auth/Register.vue'),
+      // meta: {
+      //   authPage: true
+      // }
     },
     {
       path: '/login',
       name: 'auth.login',
-      component: () => import('../views/auth/Login.vue')
+      component: () => import('../views/auth/Login.vue'),
+      // meta: {
+      //   authPage: true
+      // }
     },
     {
       path: '/supplier',
       name: 'supplier.list',
-      component: () => import('../views/supplier/ListSupplier.vue')
+      component: () => import('../views/supplier/ListSupplier.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
-      path: '/supplier-edit',
+      path: '/supplier-edit/:id',
       name: 'supplier.edit',
-      component: () => import('../views/supplier/EditSupplier.vue')
+      component: () => import('../views/supplier/EditSupplier.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
       path: '/supplier-create',
       name: 'supplier.create',
-      component: () => import('../views/supplier/CreateSupplier.vue')
+      component: () => import('../views/supplier/CreateSupplier.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     },
     {
       path: '/about',
@@ -54,5 +78,34 @@ const router = createRouter({
     }
   ]
 })
+// router.beforeEach(async (to, from, next)=>{
+
+  // const isAuthenticated = localStorage.getItem('token')
+
+  // if(to.name !== 'auth.login' && !isAuthenticated) next({name : 'auth.login'})
+   // else next();
+//   if(to.meta.requireAuth){
+//     const auth = useAuth()
+//     await auth.getUser()
+//     if(auth.user){
+//       next()
+//     }else{
+//       next(
+//         {
+//           name : 'auth.login'
+//         }
+//       )
+//     }
+//   }
+//   if(to.meta.authPage){
+//     const auth = useAuth()
+//     await auth.getUser()
+//     if(!auth.user){
+//       next()
+//     }else{
+//       next(from)
+//     }
+//   }
+// })
 
 export default router

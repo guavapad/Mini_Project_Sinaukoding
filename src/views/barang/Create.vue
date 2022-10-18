@@ -4,13 +4,13 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
 </script>
 <template>
     <Navbar />
-    <div class="container">
+    <div class="container cont">
         <div class="row">
             <div class="col-12">
                 <div class="card rounded shadow cd-size">
                     <div class="card-header text-center">Tambah Barang</div>
                     <div class="card-body">
-                        <form>
+                        <form @submit.prevent="submitData()">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-form-label col-sm-2">Nama Barang</label>
                                 <div class="col-sm-10">
@@ -32,19 +32,20 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
                             <div class="row mb-3 align-items-center">
                                 <label class="col-form-label col-sm-2">Supplier Barang</label>
                                 <div class="col-sm-10">
-                                    <select  class="form-select" aria-label="Default select example" v-model="supplier">
-                                        <option :value="data.supplier" v-for="data in dataTable" v-bind:key="data.id">{{data.namaSupplier}}</option>
+                                    <select class="form-select" aria-label="Default select example" v-model="supplier">
+                                        <option :value="data" v-for="(data,index) in dataTable" v-bind:key="data.index">
+                                            {{data.namaSupplier}}</option>
                                     </select>
                                 </div>
                             </div>
                             <hr>
-                        </form>
-                        <div class="btn-st">
-                            <div class="btn btn-secondary ">
-                                <router-link :to="{name : 'barang.index'}" class="text-white">kembali</router-link>
+                            <div class="btn-st">
+                                <div class="btn btn-secondary ">
+                                    <router-link :to="{name : 'barang.index'}" class="text-white">kembali</router-link>
+                                </div>
+                                <button class="btn btn-primary">Submit</button>
                             </div>
-                            <button @click="submitData()" class="btn btn-primary">Submit</button>
-                        </div>
+                        </form>
                     </div>
 
                 </div>
@@ -54,14 +55,20 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     <NavbarBottom />
 </template>
 <style>
-.cd-size{
+.cd-size {
     width: 600px;
 }
-.btn-st{
+
+.btn-st {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
+.cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
 </style>
 <script>
 import axios from 'axios';
@@ -70,10 +77,10 @@ export default {
     data: function () {
         return {
             dataTable: [],
-            namaBarang:'',
-            harga:'',
-            stok:'',
-            supplier:[]
+            namaBarang: '',
+            harga: '',
+            stok: '',
+            supplier: []
         }
     },
     created() {
@@ -81,47 +88,48 @@ export default {
     },
     methods: {
         async getData() {
+            const { data } = await axios.get("http://159.223.57.121:8090/supplier/find-all",
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        offset: 0,
+                        limit: 15
+                    }
+                });
+            console.log('data:', data.data);
+            this.dataTable = await data.data;
+        },
+        async submitData() {
             const token = localStorage.getItem('token')
-            const data = await axios.get('http://159.223.57.121:8090/supplier/find-all', {
+            let body = {
+                namaBarang: this.namaBarang,
+                harga: this.harga,
+                stok: this.stok,
+                supplier: this.supplier
+            }
+            axios.post('http://159.223.57.121:8090/barang/create', body, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+token
-                },
-                params: {
-                    offset: 0,
-                    limit: 5
+                    'Authorization': 'Bearer ' + token
                 }
             })
-            this.dataTable = ((await data).data).data
-            console.log('data', this.dataTable)
-        },
-        async submitData(){
-            const token = localStorage.getItem('token')
-            const body = {
-                namaBarang : this.namaBarang,
-                harga      : this.harga,
-                stok       : this.stok,
-                supplier   : this.supplier
-            }
-            axios.post('http://159.223.57.121:8090/barang/create',body,{
-                headers : {
-                    'Content-Type':'application/json',
-                    'Authorization':'Bearer '+token
-                }
-            })
-            .then((response)=>{
-                if(response===201){
-                alert('Data berhasil ditambah')
-                this.namaBarang = '',
-                this.harga = '',
-                this.stok = '',
-                this.supplier = {}
-                this.$router.push({name:'barang.index'})
-                }                
-            })
-            .catch((error)=>{
-                console.log('error',error)
-            })
+                .then((response) => {
+                    console.log('response', response)
+                    if (response.status === 200) {
+                        alert('Data berhasil ditambah')
+                    }
+                    this.namaBarang = ''
+                        this.harga = ''
+                        this.stok = ''
+                        this.supplier = ''
+                    this.$router.push({ name: 'barang.index' })
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
         }
     }
 }

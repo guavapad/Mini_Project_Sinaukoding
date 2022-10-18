@@ -3,51 +3,57 @@ import Navbar from '../../components/Navbar.vue';
 import NavbarBottom from '../../components/NavbarBottom.vue';
 </script>
 <template>
-    <Navbar />
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="card rounded shadow cd-size">
-                    <div class="card-header text-center bg-info text-white">Update Suplier</div>
-                    <div class="card-body">
-                        <form>
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-form-label col-sm-2">Nama Supplier</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" placeholder="Masukan Nama Supplier"
-                                        v-model="namaSupplier">
+    <div class="wrapp">
+        <Navbar />
+        <div class="container-fluid cont">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card rounded shadow cd-size">
+                        <div class="card-header text-center bg-info text-white">Update Suplier</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-form-label col-sm-2">Nama Supplier</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" placeholder="Masukan Nama Supplier"
+                                            v-model="namaSupplier">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-form-label col-sm-2">Alamat Supplier</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" placeholder="Masukan Alamat Supplier" v-model="alamat">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-form-label col-sm-2">Alamat Supplier</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" placeholder="Masukan Alamat Supplier" v-model="alamat">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-form-label col-sm-2">No. Telp Supplier</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" placeholder="Masukan No. Telp Supplier"
-                                        v-model="noTelp">
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-form-label col-sm-2">No. Telp Supplier</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" placeholder="Masukan No. Telp Supplier"
+                                            v-model="noTelp">
+                                    </div>
                                 </div>
+                                <hr>
+                            </form>
+                            <div class='btn-st'>
+                                <div class="btn btn-secondary ">
+                                    <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
+                                </div>
+                                <button @click="updateData()" class="btn btn-primary">Update</button>
                             </div>
-                            <hr>
-                        </form>
-                        <div class='btn-st'>
-                            <div class="btn btn-secondary ">
-                                <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
-                            </div>
-                            <button @click="updateData()" class="btn btn-primary">Update</button>
                         </div>
+    
                     </div>
-
                 </div>
             </div>
         </div>
+        <NavbarBottom />
     </div>
-    <NavbarBottom />
 </template>
 <style>
+.wrap{
+    display: flex;
+    flex-direction: column;
+}
 .cd-size{
     width: 600px;
 }
@@ -55,6 +61,11 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 <script>
@@ -65,7 +76,7 @@ export default {
         return {
             namaSupplier: '',
             alamat: '',
-            noTelp: ''
+            noTelp: ''  
         }
     },
     created() {

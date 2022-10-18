@@ -8,7 +8,7 @@ import Online from '../../components/Online.vue'
 <template>
     <Navbar />
     <div class="cont">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center left-menu">
             <div class="col-2">
                 <Profile />
                 <Menu />
@@ -16,19 +16,19 @@ import Online from '../../components/Online.vue'
             </div>
             <div class="col-10">
                 <div class="card rounded shadow">
-                    <div class="card-header bg-info">Dashboard</div>
+                    <div class="card-header bg-kaler text-white">Dashboard</div>
                     <div class="card-header">
                         <div class="container-fluid tb-title">
                             <h2>Supplier</h2>
                             <router-link :to="{ name: 'supplier.create' }"
-                                class="btn btn-primary btn-sm rounded shadow mb-3">Tambah Supplier
+                                class="btn bg-kaler text-white btn-sm rounded shadow mb-3">Tambah Supplier
                             </router-link>
                         </div>
                     </div>
                     <div class="card-body">
                         <table class="table">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th scope="col">No</th>
                                     <th scope="col">Nama Supplier</th>
                                     <th scope="col">Alamat</th>
@@ -44,10 +44,10 @@ import Online from '../../components/Online.vue'
                                     <td>{{data.noTelp}}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <button @click="updateData(data.id)" class="btn btn-warning btn-sm rounded shadow mb-3">
+                                            <button @click="updateData(data.id)" class="btn btn-warning btn-sm rounded shadow mb-3 mx-1">
                                                 Edit
                                             </button>
-                                            <button @click="deleteData(data.id)" class="btn btn-danger btn-sm rounded shadow mb-3">
+                                            <button @click="deleteData(data.id)" class="btn btn-danger btn-sm rounded shadow mb-3 mx-1">
                                                 Delete
                                             </button>
                                         </div>
@@ -63,6 +63,9 @@ import Online from '../../components/Online.vue'
     <NavbarBottom />
 </template>
 <style>
+.bg-kaler{
+    background-color: #900C3F;
+  }
 .tb-title{
   display: flex;
   flex-direction: row;
@@ -71,6 +74,9 @@ import Online from '../../components/Online.vue'
 .cont{
     margin-top: 70px;
 }
+.left-menu{
+    margin: 0 10px 0 10px;
+  }
 </style>
 <script>
     import axios from "axios";
@@ -90,7 +96,7 @@ import Online from '../../components/Online.vue'
             this.$router.push({name:'supplier.edit', query: {id:id}})
         },
         async getData() {
-            const { data } = await axios.get(" http://159.223.57.121:8090/supplier/find-all",
+            const { data } = await axios.get("http://159.223.57.121:8090/supplier/find-all",
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -105,22 +111,20 @@ import Online from '../../components/Online.vue'
             this.dataTable = await data.data;
         },
         async deleteData(id){
-            console.log('id',id)
-            const token = localStorage.getItem('token')
-            axios.delete('http://159.223.57.121:8090/supplier/find-by-id/'+id, {
-                headers : {
-                    'Content-Type':'application/json',
-                    'Authorization':'Bearer '+token
+            console.log('id:',id);
+            await axios.delete("http://159.223.57.121:8090/supplier/delete/" + id, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then(async (response) => {
+                const data = await response.data;
+                if (data.status === 'OK') {
+                    alert('Hapus  Supplier sukses');
+                    this.getData();
                 }
-            })
-            .then(()=>{
-                alert('berhasil di hapus!')
-                this.getData()
-            })
-            .catch((err)=>{
-                console.log('error',err)
-            })
-        }   
+            });
+        },
       }
     };
     </script>

@@ -1,11 +1,13 @@
 <template>
-    <div class="row rw-length">
+    <div class="row min-vh-100 rw-length">
         <div class="col-6 text-center justify-content-center">
-            <img src="../../assets/sinau-koding.png" class="w-100" alt="">
+            <img src="../../assets/sinau-koding.png" class="w-50" alt="">
+            <h1 class="fw-bold">Selamat Datang</h1>
+            <h5 class="fw-bold">MARKETPLACE Sinau Coding</h5>
         </div>
         <div class="col-6">
             <div class="card rounded shadow">
-                <div class="card-header text-center">Login</div>
+                <div class="card-header text-center bg-kaler text-white">Login</div>
                 <div class="card-body">
                     <form>
                         <div class="mb-3">
@@ -18,7 +20,7 @@
                         </div>
                     </form>
                     <div class="text-center">
-                        <button @click="submitData()" type="submit" class="btn btn-primary">Masuk</button>
+                        <button @click="submitData()" type="submit" class="btn btn-primary text-white bg-kaler">Masuk</button>
                     </div>
                     <div class="text-center">
                         <router-link :to="{name : 'auth.register'}">Belum Punya Akun</router-link>
@@ -30,9 +32,20 @@
     <NavbarBottom />
 </template>
 <style>
-.rw-length{
-    width: 100%;
+a{
+    text-decoration: none;
 }
+.bg-kaler{
+    background-color: #900C3F;
+  }
+.rw-length{
+    display: flex;
+    flex-direction: row;
+    align-items: center;    
+    padding-right: 80px;
+    padding-left: 80px;
+}
+
 </style>
 <script>
 import axios from 'axios'
@@ -55,6 +68,7 @@ export default {
             axios.post("http://159.223.57.121:8090/auth/login", body)
                 .then((response) => {
                     localStorage.setItem("token", response.data.data.token)
+                    localStorage.setItem("username", response.data.data.username)
                     console.log("response", response);
                     alert("berhasil masuk");
                     

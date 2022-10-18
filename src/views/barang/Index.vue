@@ -8,26 +8,26 @@ import Online from '../../components/Online.vue'
 <template>
   <Navbar />
   <div class="cont">
-    <div class="row justify-content-center">
-      <div class="col-2" style="position: sticky;">
+    <div class="row justify-content-center left-menu">
+      <div class="col-2 ">
         <Profile />
         <Menu />
         <Online />
       </div>
       <div class="col-10">
         <div class="card rounded shadow">
-          <div class="card-header bg-info">Dashboard</div>
+          <div class="card-header bg-kaler text-white">Dashboard</div>
           <div class="card-header">
             <div class="container-fluid tb-title">
               <h2>Barang</h2>
-              <router-link :to="{ name: 'barang.create' }" class="btn btn-primary btn-sm rounded shadow mb-3">Add
+              <router-link :to="{ name: 'barang.create' }" class="btn bg-kaler btn-sm text-white rounded shadow mb-3">Tambah Barang
               </router-link>
             </div>
           </div>
           <div class="card-body">
             <table class="table">
               <thead>
-                <tr>
+                <tr class="text-center">
                   <th scope="col">No</th>
                   <th scope="col">Nama Barang</th>
                   <th scope="col">Stock</th>
@@ -49,10 +49,10 @@ import Online from '../../components/Online.vue'
                   <td>{{data.supplier.noTelp}}</td>
                   <td>
                     <div class="btn-group">
-                      <button @click="updateData(data.id)" class="btn btn-warning btn-sm rounded shadow">
+                      <button @click="updateData(data.id)" class="btn btn-warning btn-sm rounded shadow mx-1">
                         Edit
                       </button>
-                      <button @click="deleteData()" class="btn btn-danger btn-sm rounded shadow">
+                      <button @click="deleteData(data.id)" class="btn btn-danger btn-sm rounded shadow mx-1">
                         Delete
                       </button>
                     </div>
@@ -68,6 +68,9 @@ import Online from '../../components/Online.vue'
   <NavbarBottom />
 </template>
 <style>
+.bg-kaler{
+  background-color: #900C3F;
+}
 .tb-title{
   display: flex;
   flex-direction: row;
@@ -76,6 +79,9 @@ import Online from '../../components/Online.vue'
 .cont{
   margin-top: 70px;
   margin-bottom: 70px;
+}
+.left-menu{
+  margin: 0 10px 0 10px;
 }
 </style>
 <script>
@@ -89,10 +95,11 @@ export default {
   },
   created() {
     this.getData();
+    this.updateData()
   },
   methods: {
     async updateData(id){
-      // console.log('data-id',id )
+      console.log('data-id',id )
       this.$router.push({name:'barang.edit', params: {id:id}})
     },
     async getData(){
@@ -110,23 +117,22 @@ export default {
       this.dataTable = ((await data).data).data;
       console.log("data", this.dataTable);
     },
-    async deleteData(id){
-            console.log('id',id)
-            const token = localStorage.getItem('token')
-            axios.delete('http://159.223.57.121:8090/barang/find-by-id/'+id, {
-                headers : {
-                    'Content-Type':'application/json',
-                    'Authorization':'Bearer '+token
+    async deleteData(id) {
+            console.log('id:', id);
+            await axios.delete("http://159.223.57.121:8090/barang/delete/" + id, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then(async (response) => {
+                const data = await response.data;
+
+                if (data.status === 'OK') {
+                    alert('Hapus Barang sukses');
+                    this.getData();
                 }
-            })
-            .then(()=>{
-                alert('berhasil di hapus!')
-                this.getData()
-            })
-            .catch((err)=>{
-                console.log('error',err)
-            })
-        }   
+            });
+        },   
   },
 };
 </script>

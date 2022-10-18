@@ -5,13 +5,13 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
 </script>
 <template>
     <Navbar />
-    <div class="container">
+    <div class="container cont">
         <div class="row">
             <div class="col-12">
                 <div class="card rounded shadow cd-size">
-                    <div class="card-header text-center bg-info text-white">Tambah Suplier</div>
+                    <div class="card-header text-center bg-kaler text-white">Tambah Suplier</div>
                     <div class="card-body">
-                        <form>
+                        <form @submit.prevent="submitData()">
                             <div class="row mb-3 align-items-center">
                                 <label class="col-form-label col-sm-2">Nama Supplier</label>
                                 <div class="col-sm-10">
@@ -33,13 +33,13 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
                                 </div>
                             </div>
                             <hr>
-                        </form>
-                        <div class="btn-st">
-                            <div class="btn btn-secondary ">
-                                <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
+                            <div class="btn-st">
+                                <div class="btn btn-secondary ">
+                                    <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
+                                </div>
+                                <button class="btn bg-kaler text-white">Submit</button>
                             </div>
-                            <button @click="submitData()" class="btn btn-primary">Submit</button>
-                        </div>
+                        </form>
                     </div>
 
                 </div>
@@ -49,6 +49,12 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     <NavbarBottom />
 </template>
 <style>
+a{
+    text-decoration: none;
+}
+.bg-kaler{
+    background-color: #900C3F;
+  }
 .cd-size{
     width: 600px;
 }
@@ -57,6 +63,11 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     flex-direction: row;
     justify-content: space-between;
 }
+.cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
 </style>
 <script>
 export default {
@@ -69,28 +80,29 @@ export default {
         }
     },
     methods :{
-        async submitData(){
-            const token = localStorage.getItem('token')
-            const body = {
-                namaSupplier : this.namaSupplier,
-                alamat : this.alamat,
-                noTelp : this.noTelp
+        submitData: async function () {
+            let dataSupplier = {
+                namaSupplier: this.namaSupplier,
+                alamat: this.alamat,
+                noTelp: this.noTelp,
             }
-            axios.post('http://159.223.57.121:8090/supplier/create',body,{
-                headers : {
-                    'content-type':'application/json',
-                    'Authorization':'Bearer '+token
-                }
-            })
-            .then((res)=>{
-                console.log('response',res)
-                alert('data berhasil ditambahkan')
-                this.$router.push({name : 'supplier.list'})
-            })
-            .catch((err)=> {
-                console.log('error', err)
-            })
-        }
+            await axios.post("http://159.223.57.121:8090/supplier/create", dataSupplier, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then(async (response) => {
+                    console.log('berhasil', response)
+                    const data = await response.data;
+                    if (response.status === 200) {
+                        alert('sukses tambah Supplier');
+                    }
+                    this.$router.push('/supplier');
+                    this.namaSupplier = '',
+                    this.alamat = '',
+                    this.noTelp = ''
+                });
+        },
         
     }
 

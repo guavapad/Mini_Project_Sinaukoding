@@ -1,6 +1,6 @@
 <template>
     <div class="card rounded shadow my-2">
-        <div class="card-header bg-info">
+        <div class="card-header bg-kaler text-center text-white">
           Online
         </div>
         <div class="card-body bg-light">
@@ -10,6 +10,9 @@
       </div>
 </template>
 <style>
+.bg-kaler{
+  background-color: #900C3F;
+}
 .font{
   font-size: small;
 }
