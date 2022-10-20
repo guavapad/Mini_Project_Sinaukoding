@@ -95,7 +95,7 @@ export default {
                     console.log('berhasil', response)
                     const data = await response.data;
                     if (response.status === 200) {
-                        alert('sukses tambah Supplier');
+                        this.$swal('data berhasil di edit')
                     }
                     this.$router.push('/supplier');
                     this.namaSupplier = '',

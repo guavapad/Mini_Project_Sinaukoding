@@ -70,7 +70,7 @@ export default {
                     localStorage.setItem("token", response.data.data.token)
                     localStorage.setItem("username", response.data.data.username)
                     console.log("response", response);
-                    alert("berhasil masuk");
+                    this.$swal('Berhasil Masuk')
                     
                     this.$router.push({ name: "barang.index" });
                     

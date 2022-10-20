@@ -78,7 +78,7 @@ export default {
             axios.post("http://159.223.57.121:8090/auth/register", body)
                 .then((response) => {
                 console.log("response", response);
-                alert("berhasil membuat akun");
+                this.$swal('Berhasil Membuat Akun')
                 this.$router.push({ name: "auth.login" });
             })
                 .catch((error) => {

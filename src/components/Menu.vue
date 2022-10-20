@@ -6,10 +6,10 @@
         <div class="card-header bg-kaler text-center text-white">
           Menu
         </div>
-        <router-link :to="{name:'supplier.list'}" class="card-body menu">
+        <router-link :to="{name:'supplier.list'}" :class="{active: $route.name==='supplier.list'}" class="card-body menu">
           Supplier
         </router-link>
-        <router-link :to="{name:'barang.index'}" class="card-body menu">
+        <router-link :to="{name:'barang.index'}" :class="{active: $route.name==='barang.index'}" class="card-body menu">
           Barang
         </router-link>
       </div>

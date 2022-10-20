@@ -4,6 +4,7 @@ import NavbarBottom from '../../components/NavbarBottom.vue'
 import Profile from '../../components/Profile.vue'
 import Menu from '../../components/Menu.vue'
 import Online from '../../components/Online.vue'
+import SearchBar from '../../components/SearchBar.vue'
 </script>
 <template>
   <Navbar />
@@ -20,22 +21,36 @@ import Online from '../../components/Online.vue'
           <div class="card-header">
             <div class="container-fluid tb-title">
               <h2>Barang</h2>
-              <router-link :to="{ name: 'barang.create' }" class="btn bg-kaler btn-sm text-white rounded shadow mb-3">Tambah Barang
+              <router-link :to="{ name: 'barang.create' }" class="btn bg-kaler btn-sm text-white rounded shadow mb-2">Tambah Barang
               </router-link>
+            </div>
+            <div class="page-top">
+              <div class="me-2">
+                <SearchBar />
+              </div>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item"><button @click="next()" class="page-link bt" href="#">Previous</button></li>
+                      <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+                      <li class="page-item"><a class="page-link">{{offset}}</a></li>
+                      <!-- <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                      <li class="page-item"><button @click="next()" class="page-link bt" href="#">Next</button></li>
+                </ul>
+              </nav>
             </div>
           </div>
           <div class="card-body">
             <table class="table">
               <thead>
-                <tr class="text-center">
-                  <th scope="col">No</th>
-                  <th scope="col">Nama Barang</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Harga</th>
-                  <th scope="col">Nama Supplier</th>
-                  <th scope="col">Alamat Supplier</th>
-                  <th scope="col">No. Telp Supplier</th>
-                  <th scope="col">Aksi</th>
+                <tr class="">
+                  <th scope="col" class="col-1">No</th>
+                  <th scope="col" class="col-2">Nama Barang</th>
+                  <th scope="col" class="col-2">Stock</th>
+                  <th scope="col" class="col-2">Harga</th>
+                  <th scope="col" class="col-2">Nama Supplier</th>
+                  <th scope="col" class="col-2">Alamat Supplier</th>
+                  <th scope="col" class="col-2">No. Telp Supplier</th>
+                  <th scope="col" class="col-2 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,7 +64,7 @@ import Online from '../../components/Online.vue'
                   <td>{{data.supplier.noTelp}}</td>
                   <td>
                     <div class="btn-group">
-                      <button @click="updateData(data.id)" class="btn btn-warning btn-sm rounded shadow mx-1">
+                      <button @click="updateData(data.id)" class="btn btn-warning text-white btn-sm rounded shadow mx-1">
                         Edit
                       </button>
                       <button @click="deleteData(data.id)" class="btn btn-danger btn-sm rounded shadow mx-1">
@@ -57,6 +72,17 @@ import Online from '../../components/Online.vue'
                       </button>
                     </div>
                   </td>
+                </tr>
+                <tr>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item"><button @click="next()" class="page-link bt" href="#">Previous</button></li>
+                      <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+                      <li class="page-item"><a class="page-link">{{offset}}</a></li>
+                      <!-- <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                      <li class="page-item"><button @click="next()" class="page-link bt" href="#">Next</button></li>
+                    </ul>
+                  </nav>
                 </tr>
               </tbody>
             </table>
@@ -68,13 +94,24 @@ import Online from '../../components/Online.vue'
   <NavbarBottom />
 </template>
 <style>
+.bt{
+  color: #900C3F !important;
+}
+a{
+  color: #900C3F !important;
+}
 .bg-kaler{
   background-color: #900C3F;
+}
+.page-top{
+  display: flex;
+  justify-content: flex-end;
 }
 .tb-title{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 0!important;
 }
 .cont{
   margin-top: 70px;
@@ -91,6 +128,7 @@ export default {
   data: function () {
     return {
       dataTable: [],
+      offset : 1,
     }
   },
   created() {
@@ -98,6 +136,17 @@ export default {
     this.updateData()
   },
   methods: {
+    next(){
+      this.offset++
+      this.getData()
+    },
+    prev(){
+      if(this.offset <= 1){
+        this.offset = 1
+      }else{
+        this.offset--
+      }
+    },
     async updateData(id){
       console.log('data-id',id )
       this.$router.push({name:'barang.edit', params: {id:id}})
@@ -110,7 +159,7 @@ export default {
           'Authorization': 'Bearer '+token
         },
         params:{
-          offset : 0,
+          offset : this.offset,
           limit : 5
         }
       })
@@ -128,7 +177,7 @@ export default {
                 const data = await response.data;
 
                 if (data.status === 'OK') {
-                    alert('Hapus Barang sukses');
+                  this.$swal('data berhasil di hapus')
                     this.getData();
                 }
             });

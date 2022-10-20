@@ -15,5 +15,6 @@
 }
 .font{
   font-size: small;
+
 }
 </style>

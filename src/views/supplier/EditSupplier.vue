@@ -9,9 +9,9 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
             <div class="row">
                 <div class="col-12">
                     <div class="card rounded shadow cd-size">
-                        <div class="card-header text-center bg-info text-white">Update Suplier</div>
+                        <div class="card-header text-center bg-kaler text-white">Update Suplier</div>
                         <div class="card-body">
-                            <form>
+                            <form @submit.prevent="updateData()">
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-form-label col-sm-2">Nama Supplier</label>
                                     <div class="col-sm-10">
@@ -33,13 +33,13 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
                                     </div>
                                 </div>
                                 <hr>
-                            </form>
-                            <div class='btn-st'>
-                                <div class="btn btn-secondary ">
-                                    <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
+                                <div class='btn-st'>
+                                    <div class="btn btn-secondary ">
+                                        <router-link :to="{name : 'supplier.list'}" class="text-white">kembali</router-link>
+                                    </div>
+                                    <button class="btn bg-kaler text-white">Update</button>
                                 </div>
-                                <button @click="updateData()" class="btn btn-primary">Update</button>
-                            </div>
+                            </form>
                         </div>
     
                     </div>
@@ -50,6 +50,9 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     </div>
 </template>
 <style>
+.bg-kaler{
+    background-color: #900C3F;    
+}
 .wrap{
     display: flex;
     flex-direction: column;
@@ -66,6 +69,9 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
     display: flex;
     justify-content: center;
     align-items: center;
+}
+a{
+    text-decoration: none;
 }
 </style>
 <script>
@@ -85,7 +91,7 @@ export default {
     methods: {
         async getData() {
             const token = localStorage.getItem('token')
-            const data = axios.get('http://159.223.57.121:8090/supplier/find-by-id/' + this.$route.query.id, {
+            const data = axios.get('http://159.223.57.121:8090/supplier/find-by-id/' + this.$route.params.id, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
@@ -102,18 +108,19 @@ export default {
         },
         async updateData(){
             const token = localStorage.getItem('token')
-            const body = {
+            let body = {
                 namaSupplier : this.namaSupplier,
                 alamat : this.alamat,
                 noTelp : this.noTelp
             }
-            axios.put('http://159.223.57.121:8090/supplier/update/'+this.$route.query.id,body,{
+            await axios.put('http://159.223.57.121:8090/supplier/update/'+this.$route.params.id,body,{
                 headers: {
                     'Content-Type':'application/json',
                     'Authorization':'Bearer '+token
                 }
             })
             .then(()=>{
+                this.$swal('data berhasil di edit')
                 this.$router.push('/supplier')
             })
             .catch((error)=>{

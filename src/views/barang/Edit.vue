@@ -161,7 +161,7 @@ export default {
                     // const data = await response.data
                     console.log('response',response)
                     if(response.status === 'OK'){
-                        alert('Data Berhasil di update')
+                        this.$swal('data berhasil di edit')
                     }
                     console.log('update ke data :', data)
                     this.$router.push('/')
