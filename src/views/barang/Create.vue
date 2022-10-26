@@ -119,7 +119,7 @@ export default {
                 .then((response) => {
                     console.log('response', response)
                     if (response.status === 200) {
-                        alert('Data berhasil ditambah')
+                        this.$swal('data berhasil ditambah')
                     }
                     this.namaBarang = ''
                         this.harga = ''

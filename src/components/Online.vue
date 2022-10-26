@@ -4,8 +4,10 @@
           Online
         </div>
         <div class="card-body bg-light">
-          <p class="font">hari online :</p>
-          <p class="font">waktu online :</p>
+          <p class="font"><strong> Online : </strong>
+            <!-- <VueClock /> -->{{date}}
+          </p>
+          <p class="font" v-show="time"><strong>Waktu Online : </strong>{{time}}</p>
         </div>
       </div>
 </template>
@@ -18,3 +20,28 @@
 
 }
 </style>
+<script>
+// import VueClock from '@dangvanthanh/vue-clock'
+export default {
+  // components : {VueClock},
+  data : function(){
+    return{
+      time : '',
+      date : ''
+    }
+  },
+  methods: {
+    printTime: function(){
+      return new Date().toLocaleTimeString();
+    },
+    printDate : function(){
+      return new Date().toLocaleDateString();
+    }
+
+  },
+  mounted : function(){
+    this.time  = this.printTime()
+    this.date = this.printDate()
+  }
+}
+</script>

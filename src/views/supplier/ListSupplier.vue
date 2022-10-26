@@ -27,11 +27,13 @@ import SearchBar from '../../components/SearchBar.vue'
                         </div>
                         <div class="page-top">
                          <div class="me-2">
-                             <SearchBar />
+                            <div class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
+                            </div>
                          </div>
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><button @click="next()" class="page-link bt"
+                                    <li class="page-item"><button @click="prev()" class="page-link bt"
                                             href="#">Previous</button></li>
                                     <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
                                     <li class="page-item"><a class="page-link">{{offset}}</a></li>
@@ -54,7 +56,7 @@ import SearchBar from '../../components/SearchBar.vue'
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(data, i) in dataTable" v-bind:key="data.id">
+                                <tr v-for="(data, i) in filteredPost" v-bind:key="data.id">
                                     <th scope="row">{{i + 1}}</th>
                                     <td>{{data.namaSupplier}}</td>
                                     <td>{{data.alamat}}</td>
@@ -146,6 +148,7 @@ export default {
         return {
             dataTable: [],
             offset: 1,
+            search :''
         }
     },
     created() {
@@ -153,10 +156,12 @@ export default {
     },
     methods: {
         next() {
+            console.log('test')
             this.offset++
             this.getData()
         },
         prev() {
+            console.log('tost')
             if (this.offset <= 1) {
                 this.offset = 1
             } else {
@@ -198,6 +203,11 @@ export default {
                 }
             });
         },
+    },
+    computed  :{
+        filteredPost(){
+            return this.dataTable.filter(dataTable => dataTable.namaSupplier.toLowerCase().includes(this.search.toLowerCase()))
+        }
     }
 };
 </script>

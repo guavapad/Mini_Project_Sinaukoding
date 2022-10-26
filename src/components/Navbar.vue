@@ -16,11 +16,13 @@
             </div>
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <router-link :to="{name:'barang.index'}" class="nav-link text-white" aria-current="page">List Barang</router-link>
+                <li class="nav-item login">
+                  <font-awesome-icon icon="fa-solid fa-right-to-bracket" class="me-1 text-white" />
+                  <router-link :to="{name:'auth.login'}" class="nav-link text-white" aria-current="page">Log in</router-link>                
                 </li>
-                <li class="nav-item">
-                  <router-link :to="{name : 'supplier.list'}" class="nav-link text-white" aria-current="page">List Supplier</router-link>
+                <li class="nav-item login">
+                  <font-awesome-icon icon="fa-solid fa-right-from-bracket" class="me-1 log text-white" />
+                  <router-link :to="{name : 'supplier.list'}" class="nav-link text-white" aria-current="page">Log out</router-link>
                 </li>
               </ul>
             </div>
@@ -31,6 +33,9 @@
 <style scoped>
 .bg-kaler{
   background-color: #900C3F;
+}
+.log{
+  border-color: aliceblue;
 }
 .img-size{
   height: 35px;
@@ -46,5 +51,11 @@
 }
 .nav-edit{
   padding: 0 !important;
+}
+.login{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
 }
 </style>

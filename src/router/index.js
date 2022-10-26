@@ -78,10 +78,13 @@ const router = createRouter({
     }
   ]
 })
-// router.beforeEach(async (to, from, next)=>{
-
-  // const isAuthenticated = localStorage.getItem('token')
-
+const isAuthenticated = localStorage.getItem('token') ;
+router.beforeEach((to, from, next)=>{
+  if(to.name !== "auth.login" && isAuthenticated==''){
+   next({name:"auth.login"})
+  }  
+    else next();
+})
   // if(to.name !== 'auth.login' && !isAuthenticated) next({name : 'auth.login'})
    // else next();
 //   if(to.meta.requireAuth){

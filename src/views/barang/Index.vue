@@ -10,7 +10,7 @@ import SearchBar from '../../components/SearchBar.vue'
   <Navbar />
   <div class="cont">
     <div class="row justify-content-center left-menu">
-      <div class="col-2 ">
+      <div class="col-2">
         <Profile />
         <Menu />
         <Online />
@@ -26,7 +26,11 @@ import SearchBar from '../../components/SearchBar.vue'
             </div>
             <div class="page-top">
               <div class="me-2">
-                <SearchBar />
+                <div class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
+                  <!-- <button class="btn btn-src" type="submit">Search</button> -->
+                </div>
+                <!-- <SearchBar /> -->
               </div>
               <nav aria-label="Page navigation example">
                 <ul class="pagination">
@@ -54,7 +58,7 @@ import SearchBar from '../../components/SearchBar.vue'
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(data,index) in dataTable" v-bind:key="data.id">
+                <tr v-for="(data,index) in filteredPost" v-bind:key="data.id">
                   <th scope="row">{{index+1}}</th>
                   <td>{{data.namaBarang}}</td>
                   <td>{{data.stok}}</td>
@@ -94,6 +98,10 @@ import SearchBar from '../../components/SearchBar.vue'
   <NavbarBottom />
 </template>
 <style>
+.btn-src{
+  border-color: #900C3F;
+  color: #900c3f;
+}
 .bt{
   color: #900C3F !important;
 }
@@ -129,6 +137,7 @@ export default {
     return {
       dataTable: [],
       offset : 1,
+      search : ''
     }
   },
   created() {
@@ -160,7 +169,7 @@ export default {
         },
         params:{
           offset : this.offset,
-          limit : 5
+          limit : 100
         }
       })
       this.dataTable = ((await data).data).data;
@@ -183,5 +192,10 @@ export default {
             });
         },   
   },
+  computed : {
+    filteredPost(){
+      return this.dataTable.filter(dataTable => dataTable.namaBarang.toUpperCase().includes(this.search.toUpperCase()))
+    }
+  }
 };
 </script>
